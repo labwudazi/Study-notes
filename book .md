@@ -45,6 +45,7 @@ Uncaught ReferenceError: 测试 is not defined
 因为你写的 测试 两个字没有加 '' 那么 js 就会认为他是一个变量，变量没有声明就会报错 not defined
 var bool = true;
 undefined 的意思是 变量声明未赋值就使用就会得到 undefined 不会创建变量，只是为了查错。
+- 当访问对象不存在属性的时候返回的是 undefined
 var x;
 console.log(x)
 null 和 对象(object)
@@ -1046,50 +1047,53 @@ var books = [
 
 ### 时间
 
-    <script>
-            var date = new Date();
-            console.log(date);(获得时间的对象)
+```js
 
-          时间的方法
-            var year = date.getFullYear();(获取年份)
-            console.log(year);
-            var month = date.getMonth() + 1;
-            console.log(month);(获取月份)
-            var hou = date.getDate();
-            console.log(hou);(获取日)
-            var xingqi = date.getDay();
-            console.log(xingqi);(获取星期)
-            var hour = date.getHours();
-            console.log(hour);(获取小时)
-            var minute = date.getMinutes();
-            console.log(minute);(获取分钟)
-            var second = date.getSeconds();
-            console.log(second);(获取秒)
-            var milliSecond = date.getMilliseconds();
-            console.log(milliSecond);(获取毫秒)
-          上述方法 在get 后加上 UTC 就是获取当前世界时间
-          get 换成 set 就是设置当前时间
-            var time = date.getTime();
-            console.log(time);(获得格林威治时间)
-            1970 年 1.1 0 : 0 : 0 到现在的毫秒数
-            可以作为一个唯一性的不重复的数字
-            var strTime = Date();
-            console.log(typeof strTime);(真正获得一个当前时间的字符串)
-        </script>
+  var date = new Date();
+  console.log(date);(获得时间的对象)
+
+时间的方法
+  var year = date.getFullYear();(获取年份)
+  console.log(year);
+  var month = date.getMonth() + 1;
+  console.log(month);(获取月份)
+  var hou = date.getDate();
+  console.log(hou);(获取日)
+  var xingqi = date.getDay();
+  console.log(xingqi);(获取星期)
+  var hour = date.getHours();
+  console.log(hour);(获取小时)
+  var minute = date.getMinutes();
+  console.log(minute);(获取分钟)
+  var second = date.getSeconds();
+  console.log(second);(获取秒)
+  var milliSecond = date.getMilliseconds();
+  console.log(milliSecond);(获取毫秒)
+上述方法 在get 后加上 UTC 就是获取当前世界时间
+get 换成 set 就是设置当前时间
+  var time = date.getTime();
+  console.log(time);(获得格林威治时间)
+  1970 年 1.1 0 : 0 : 0 到现在的毫秒数
+  可以作为一个唯一性的不重复的数字
+  var strTime = Date();
+  console.log(typeof strTime);(真正获得一个当前时间的字符串)
+```
 
 - 时间获取(电子表)
 
-   <div>
-       <span class="hour">0</span>
-       <span> : </span>
-       <span class="minute">0</span>
-       <span> : </span>
-       <span class="second">0</span>
-       <br />
-       <button class="stop">stop。。。</button>
-       <br />
-       <button class="begin">开始</button>
-     </div>
+```html
+<div>
+  <span class="hour">0</span>
+  <span> : </span>
+  <span class="minute">0</span>
+  <span> : </span>
+  <span class="second">0</span>
+  <br />
+  <button class="stop">stop。。。</button>
+  <br />
+  <button class="begin">开始</button>
+</div>
+```
 
 ```js
 //  setInterval 计时器 定时器
@@ -1156,16 +1160,18 @@ setTimeout(fun(num), 1000);
 异步不会影响其他代码的执行
 异步和同步都出现的时候，异步操作肯定会在同步之后执行完毕
 
-      setTimeout(function () {
-        console.log("我是异步操作1");
-      }, 10);
-      setTimeout(function () {
-        console.log("我是异步操作");
-      }, 0);
-      for (var i = 0; i < 10000; i++) {
-        console.log(i);
-      }
-      console.log("循环结束");
+```js
+setTimeout(function () {
+  console.log("我是异步操作1");
+}, 10);
+setTimeout(function () {
+  console.log("我是异步操作");
+}, 0);
+for (var i = 0; i < 10000; i++) {
+  console.log(i);
+}
+console.log("循环结束");
+```
 
 - 倒计时
 
@@ -1482,11 +1488,89 @@ console.log(num1);
 
 ##### window 下的属性和方法
 
-属性：console onresize (该属性是监听窗口变化的事件函数) 浏览器窗口大小(innerHeight innerWidth outerWidth outerHeight)
+属性：console onresize (该属性是监听窗口变化的事件函数) 浏览器窗口大小(innerHeight innerWidth outerWidth outerHeight) scrollX scrollY screen location onhashchange history
 当用户手动调整了窗口大小，前端需要根据窗口大小调整一些样式,使用 onresize 监听窗口是否改变。
 window.onresize = function () {
 console.log("窗口变化了");
 };
+
+- 原生的页面滚动条事件 onscroll
+
+```js
+window.onscroll = function () {
+  console.log("滚动条事件触发");
+  // 滚动条距离顶部的距离
+  var x = window.scrollX;
+  // 别称 pageXOffset
+  var y = window.scrollY;
+  // 别称 pageYOffset
+  console.log(x, y);
+};
+```
+
+- screen 是返回屏幕的一些信息
+  screen 其实也是一个对象 里面包含一部分屏幕相关的属性
+
+- location 是页面地址的信息 也是一个对象
+  console.log(window.location);
+
+```js
+    file:///D:/digitalcity%E6%8E%88%E8%AF%BE/2020/2003/1122/index.html
+  // 一个地址：   https://developer.mozilla.org:80/zh-CN/docs/Web/API/Window/screen?name=aaaa&x=1
+
+地址栏地址的组成      url    协议、主机(域名)、端口、路径
+www.xxx.com:8080
+$("button").click(function () {
+  location.href = "http://www.baidu.com";
+});
+属性
+href   获取或者设置当前页面的地址
+hash   获取或者设置当前页面地址的锚点
+host   获取主机(域名)和端口号(如果后面带了)
+hostname 获取主机(域名)
+port   获取端口号
+pathname 获取路径部分    /
+search 获取或者设置查询部分   ?
+$(".location").click(function () {
+  // console.log(location.host);
+  location.hash = "#test";
+  // location.assign("./xxx.html");
+});
+
+方法
+assign    跳转
+replace   替换  无历史记录
+reload    刷新
+```
+
+- window.onhashchange 锚点事件监听
+
+```js
+window.onhashchange = function () {
+  console.log("锚点改变了");
+};
+```
+
+- history 浏览器的历史记录 也是一个对象
+
+```js
+  属性   length
+  方法   back()后退     go前进或后退     forward 前进
+  $(".history").click(function () {
+    console.log(history.length);
+    history.go(0);
+  });
+```
+
+navigator 获取的是当前浏览器的一些信息
+当网页在不同的平台打开时可以使用 navigator 获取一些打开该页面的应用程序的信息
+
+```js
+$(".navigator").click(function () {
+  console.log(navigator.appCodeName);
+  console.log(navigator.appName);
+});
+```
 
 方法：setInterval、setTimeout clear open close alert confirm propmt
 
@@ -1517,8 +1601,25 @@ console.log("窗口变化了");
   var res = prompt("请输入密码", "admin");
   console.log(res);
   当你点击确定的时候 prompt 方法返回 输入的内容 否则返回 null
+- requestAnimationFrame 让浏览器帮助你反复执行一件事，执行的时候每秒限定次数 每秒 60 次
 
-##### 浏览器对象下的 document 属性
+```js
+var num = 0;
+// 递归 函数内部调用函数本身         就是类似循环
+// requestAnimationFrame   让浏览器帮助你反复执行一件事，执行的时候每秒限定次数   每秒60次
+function step() {
+  num++;
+  if (num < 100) {
+    console.log("111");
+    window.requestAnimationFrame(step);
+    // 使用window下的requestAnimationFrame 方法 调用step函数
+    // step()
+  }
+}
+window.requestAnimationFrame(step);
+```
+
+### 浏览器对象下的 document 属性
 
 原生 dom ：document 、 object 、 model 文档对象模型
 浏览器提供给 js 的工具 可以让其他的语言修改或者获取文档的内容
@@ -1531,48 +1632,60 @@ dom 树 将文档分类 分成很多节点
 
 获取元素节点
 
-1.  通过 id 名 获取 getElementById
-2.  通过 class 名 获取 getElementsByClassName 获取的是 标签集合(类数组)
-3.  通过标签名获取 getElementsByTagName 获取的是 标签集合(类数组)
-4.  通过标签的 name 属性获取 getElementsByName
-5.  querySelector 通过选择器获取 获取匹配到的第一个 单一元素
-6.  querySelectorAll 通过选择器获取 获取的是 标签集合(类数组)
-    var box = document.getElementById("box");
-    var box = document.getElementsByClassName("box")[1];
-    var box = document.querySelectorAll(".box")[0];
-    console.log(box);
+```js
+// 1.  通过 id 名 获取 getElementById
+var box = document.getElementById("box");
+// 2.  通过 class 名 获取 getElementsByClassName 获取的是 标签集合(类数组)
+// 3.  通过标签名获取 getElementsByTagName 获取的是 标签集合(类数组)
+// 4.  通过标签的 name 属性获取 getElementsByName
+// 5.  querySelector 通过选择器获取 获取匹配到的第一个 单一元素
+// 6.  querySelectorAll 通过选择器获取 获取的是 标签集合(类数组)
+var box = document.getElementById("box");
+var box = document.getElementsByClassName("box")[1];
+var box = document.querySelector(".box");
+var box = document.querySelectorAll(".box")[0];
+console.log(box);
+```
 
 ## 事件绑定
 
-        原生 dom 元素.onclick = function(){点击做的事}
-        onclick onfocus onblur onchange oninuput onkeydown onkeypress onkeyup
-        onmouseenter onmouseleave onscroll onresize onhashchange onmousemove ondblclick onload onwhell
+原生 dom 元素.onclick = function(){点击做的事}
+onclick onfocus onblur onchange oninuput onkeydown onkeypress onkeyup
+onmouseenter onmouseleave onscroll onresize onhashchange onmousemove ondblclick onload onwhell
 
 事件对象 event
 document.querySelector(".btn").onclick = function () {
 // console.log("点击事件触发");
 };
+
+#### 事件对象 event
+
+- 事件对象 event 事件函数触发的时候默认会接收一个参数 这个参数就是事件对象
+- 事件函数就是(对象.事件 = 函数 )后边的函数就是事件函数
+
+```js
 document.querySelector(".input").onkeydown = function (event) {
 获取键盘码 根据键盘码判断到底的是什么键
 需要通过事件对象 event
-//event.preventDefault() 阻止默认行为
 // event.preventDefault() 阻止默认行为
 // event.pageX 距离文档左部的距离
 // event.pageY 距离文档顶部的距离
-// event.target 鼠标真正接触的元素 区分和 this 的区别
+// event.target 鼠标真正接触的元素 区分和 this 的区别this指的是调用事件本身的对象，而event.target指的是 本身和自己的子级
 // event.type 事件类型
 // event.keyCode 键盘码
 // event.which 按键码 鼠标左键 1
-// event.timeStamp
+// event.timeStamp 进入浏览器的时间
 // event.stopPropagation 阻止事件冒泡
 console.log("键盘按下 事件触发", event);
 };
 document.querySelector(".box").onmousemove = function (event) {
 console.log(event.pageX);
 };
+```
 
-- onchange 事件和 oninput 事件的区别
+- **onchange 事件和 oninput 事件的区别**
 
+```js
 document.querySelector(".input").onchange = function () {
 onchange 就是域的内容发生改变的时候触发
 // 在 input 上失去焦点的时候触发
@@ -1584,18 +1697,116 @@ document.querySelector(".input").oninput = function () {
 console.log("input 事件触发");
 };
 
-- 当页面准备好的时候
+```
 
-\$(document).ready(function () {});
+当我们在元素节点引入自己写的 js 时，如果直接引用因为代码从上到下执行顺序我们将不能获得元素节点那么我们就可以通过下面方法实现获取
 
-\$(function(){})(上面的简写)
+```js
+-当页面准备好的时候;
+
+$(document).ready(function () {});
+
+$(function () {})(上面的简写);
 
 window.onload = function () {};
+```
+
+例如
+
+```js
+var a = 1000;
+window.onload = function () {
+  document.querySelector(".btn").onclick = function () {
+    console.log(a);
+  };
+};
+$(function () {
+  console.log("我是小白");
+});
+$(document).ready(function () {
+  document.querySelector(".input").onclick = function () {
+    console.log(2222);
+  };
+});
+```
+
+创建一个函数简化获取 dom 节点
+实现 document.querySelector('.btn') ===> getEle('.btn')
+
+```js
+var getEle = function (selector) {
+  return document.querySelector(selector);
+};
+var getAllEle = function (selector) {
+  return document.querySelectorAll(selector);
+};
+```
+
+#### 修改行内样式和属性
+
+- 使用 dom 元素.style 获取该元素的行内样式表对象 这个对象内的属性可以直接修改 也可以获取
+
+```js
+ var box = getEle(".box");
+  getEle(".btn").onclick = function () {
+    // console.log("11111");
+   ** 修改行内样式**
+    // 使用 dom元素.style  获取该元素的行内样式表对象 这个对象内的属性可以直接修改   也可以获取
+    var styleObj = box.style;
+    // console.log(styleObj);
+    styleObj.width = "300px";
+    styleObj.backgroundColor = "red";
+    // styleObj["background-color"] = "red";
+    // console.log(styleObj);
+    **修改属性**
+    // 原生dom元素.setAttribute(名,值)
+    box.setAttribute("title", "我是box");
+    // 添加title属性时，鼠标放到元素节点是 会出现title属性的属性值
+    **获取属性**
+    // 原生dom元素.getAttribute(名)
+    console.log(box.getAttribute("class"));
+    **删除属性**
+    // 原生dom元素.removeAttribute(名)   跟设置成空类似
+    box.removeAttribute("title");
+```
+
+**修改文本内容**
+
+```js
+原生 dom.innerText 原生 dom.innerHTML 属性
+box.innerText = "哈哈哈哈哈";
+box.innerHTML = "<span>哈哈哈哈哈</span>";
+获取
+console.log(box.innerText);
+console.log(box.innerHTML);
+
+// dom(父级).insertBefore(新的元素节点,存在的元素节点(父级的子级))
+// 给父级添加一个孩子，在已有的孩子之前添加
+ var li = document.createElement("li");
+ li.innerText = "666";
+document
+ .querySelector("ul")
+.insertBefore(li, document.querySelector("ul > li:nth-child(1)"));
+```
+
+**访问对象下的属性 可以使用 []**
+
+```js
+var obj = {
+  "a-b": 10,
+  x: 1000,
+};
+var x = "x";
+// 访问对象下的属性 可以使用 []
+console.log(obj[x]); // 1000
+console.log(obj["a-b"]); // 10
+console.log(obj["x"]); // 1000
+console.log(obj.x); // 1000
+```
 
 ### 如何创建一个元素节点
 
-\$('<li>')
-append
+```js
 var liEle = document.createElement("li");(创建元素节点)
 var liTxtNode = document.createTextNode("666");(创建文本节点)
 原生 dom.innerText 原生 dom.innerHTML 文本
@@ -1604,22 +1815,43 @@ setAttribute 属性
 liEle.innerText = "888";
 liEle.setAttribute("title", "888");
 console.log(liEle);
-添加子元素节点 添加成最后一个
+```
+
+#### 添加子元素节点 添加成最后一个
+
+```js
 父元素.appendChild(子元素)
 父元素.append(子元素) 子元素可以使字符串或者元素节点 ie 不支持
 liEle.append("888");
 document.querySelector(".comment-list").append(liEle);
-删除子元素节点
+```
+
+#### 删除子元素节点
+
+```js
 父元素.removeChild(子元素) 删除子元素
 元素.remove() 删除元素 ie 不支持
 document
-.querySelector(".comment-list")
-.removeChild(document.querySelector(".comment-list li:nth-child(2)"));
+  .querySelector(".comment-list")
+  .removeChild(document.querySelector(".comment-list li:nth-child(2)"));
 document.querySelector(".comment-list li:nth-child(2)").remove();
+```
 
-查找的用法 .parentNode 属性 查找父级
+#### 查找的用法
 
-直接使用 innerHTML 创建
+- .parentNode 属性 查找父级
+- dom.tagName 元素的标签名 获取到大写的字符串
+- dom.className 元素的 class 名 获取到的是 class 属性的属性值
+
+#### 直接使用 innerHTML 属性 创建
+
+```js
+var liEle = document.createElement("li");
+liEle.innerHTML = '<span>888</span><button class="del">删除</button>';
+document.querySelector(".comment-list").append(liEle);
+```
+
+#### 元素.trigger 模拟事件触发
 
 ```js
 $(".btn").click(function () {
@@ -1632,56 +1864,581 @@ setInterval(function () {
 }, 1000);
 ```
 
+#### 事件绑定
+
+```html
+<button class="btn">绑定事件</button>
+<!-- 直接定义事件函数 在 html 内绑定事件 -->
+<button onclick="fun()" class="btn">html绑定事件</button>
+<!-- onclick="delFun(event)"    ===>   del3.onclick = function(event){ this delFun(this)} -->
+<script>
+  // 一般写法 如果对同一个事件进行操作，下面的会覆盖上面的操作
+  document.querySelector(".btn").onclick = function () {
+    console.log("111");
+  };
+  // 添加事件监听 可以对一个事件多次操作，而且不糊被覆盖
+  var fun = function () {
+    console.log("aaa");
+  };
+  document.querySelector(".btn").addEventListener("click", fun);
+  // 移除事件绑定
+  document.querySelector(".btn").removeEventListener("click", fun);
+
+  // 直接定义事件函数 在 html 内绑定事件
+  // 给 html 元素添加一个 onclick 属性 属性值是全局函数的调用
+  var fun = function () {
+    console.log("测试 html 内事件绑定");
+  };
+</script>
+```
+
+```html
+<!-- 通过给html添加onclick属性 添加事件绑定 -->
+<button onclick="fun(this)" class="del">删除</button>
+<script>
+  // onclick="delfun(this)" 相当于del元素.onclick = function(event){ this
+  delFun(this)}
+  // 所有在delfun函数中不能直接使用this,需要给delFun函数传递this从而在onclick函数内拿到this
+</script>
+```
+
+#### 事件运行机制
+
+- 事件捕获：
+  事件从最不精确的对象(document 对象)开始触发，然后到最精确
+- 事件冒泡：
+  事件会从最内层的元素开始发生，一直向上传播，直到 document 对象。
+
+```html
+<div class="box">
+  <div class="box1"></div>
+</div>
+<script>
+  document.querySelector(".box1").onclick = function () {
+    console.log("我是小盒子");
+    // 阻止事件冒泡
+    // event.stopPropagation();
+  };
+  document.querySelector(".box").onclick = function () {
+    console.log("我是大盒子");
+  };
+  // 当点击小盒子是大盒子的点击事件也会触发
+</script>
+```
+
+- 阻止事件冒泡 event.stopPropagation();
+
+#### 事件委托
+
+- 将某个元素的事件委托给父级或祖先绑定
+
+#### this.指向
+
+- 在对象的方法内的 this 当方法执行(调用)的时候 this 指的就是这个对象
+- 函数内的 this 指向的是调用该函数的对象
+  };
+
 ```js
-call \ apply\ bind 修改 this 指向
+var obj = {
+  name: "小黑",
+};
+obj.say = function () {
+  console.log("我是" + this.name);
+  // var b = this
+  function x(y) {
+    console.log(y.name);
+  }
+  //  x(b);
+  x(this);
+  // 函数内的 this 指向的是调用该函数的对象
+};
+obj.say();
+```
 
-      // bind   bind方法的作用是生成一个和某个函数一模一样的函数 并且可以修改函数内的 this 指向
-      // 无论什么时候调用该函数 this 指向基本上不会改变了
-      // 用法  xxx.bind(newThis)    xxx 代表的是要拷贝的函数    newThis 代表的是替换成别的对象
-      // var a = 10;
-      // function fun() {
-      //   console.log(this.a);
-      // }
-      // var obj = {
-      //   a: 100
-      // };
-      // // fun();
-      // //
-      // var obj1 = {
-      //   a: 200
-      // };
-      // var newFun = fun.bind(obj);
-      // console.log(newFun);
+#### if 判断里哪些值是 false
 
-      // obj1.fun = newFun;
-      // obj1.fun();
+- "" 、null 、undefined、 NaN 、0
 
-      function handleClick() {
-        console.log(this);
+```css
+/* 属性选择器 */
+input[type] {
+  width: 100px;
+}
+/* 伪类选择器 */
+/* a:visited 过去的
+      a:hover
+      a:active
+      a:focus */
+```
+
+#### 表单
+
+```html
+<form>
+    <!--type 值为 text	定义单行的输入字段，用户可在其中输入文本。默认宽度为 20 个字符。 -->
+    <input type="text" value="" />
+    <!-- type 值为 password	定义密码字段。该字段中的字符被掩码。 -->
+    <input type="password" name="pwd" />
+    <!-- type 值为 radio	定义单选按钮。 -->
+    <input type="radio" name="sex" id="" checked />
+    <input type="radio" name="sex" id="" />
+    <!-- type 值为 checkbox 定义复选框。 加checked属性默认为选中状态-->
+    <input type="checkbox" name="vehicle" value="Bike" checked /> I have a bike
+    <input id="agree" type="checkbox" name="vehicle" value="Car" /> I have a car
+    <!--type 值为 submit	定义提交按钮。提交按钮会把表单数据发送到服务器。 -->
+    <input type="submit" value="测试" />
+  </form>
+</form>
+<script>
+  //  .value   获取或者设置 value 值
+  //  .checked 获取或设置选中状态
+  // jquery 获取checked 状态 $('#argee').prop('checked')
+  var username = document.querySelector("#username");
+  document.querySelector("#agree").checked = false;
+  // console.log(status, true);
+</script>
+```
+
+### 拖拽事件
+
+- 拖到何处 - ondragover 事件规定被拖动的数据能够被放置到何处。
+- 进行放置 - ondrop 当放开被拖数据时，会发生 drop 事件。
+- 拖放的内容 - ondragstart 和 setData() 然后，规定当元素被拖动时发生的事情。
+- dataTransfer.setData() 方法设置被拖动数据的数据类型和值
+  [拖拽事件](./照片/拖拽.png)
+
+#### call apply\bind 修改 this 指向
+
+#### bind
+
+- bind 方法的作用是生成一个和某个函数一模一样的函数 并且可以修改函数内的 this 指向
+- 无论什么时候调用该函数 this 指向基本上不会改变了
+- 用法 xxx.bind(newThis) xxx 代表的是要拷贝的函数 newThis 代表的是替换成别的对象
+
+```js
+var a = 10;
+function fun() {
+  console.log(this.a);
+}
+var obj = {
+  a: 100,
+};
+// fun();
+//
+var obj1 = {
+  a: 200,
+};
+var newFun = fun.bind(obj);
+console.log(newFun); //this指的是obj
+
+obj1.fun = newFun;
+obj1.fun(); //this指的是obj
+```
+
+##### call apply
+
+- 替代某个函数执行，并且将函数内的 this 指向改了
+- **call 和 apply 的区别**仅限于当需要给函数传递参数的时候有区别:
+  - xxFun.call(newThis,参数 1,参数 2,...)
+  - xxFun.apply(newThis,[参数 1,参数 2,...])
+
+```js
+var obj = {
+  b: 100,
+};
+var b = 200;
+
+var fun1 = function (x, y, z) {
+  console.log(this);
+  console.log(x + y + z);
+  console.log(this.b);
+};
+fun1.call(obj, 1, 2, 3);
+fun1.apply(obj, [1, 2, 3]);
+
+fun1(3, 4, 5);
+```
+
+##
+
+```html
+<!-- <div onclick="handleClick.bind(this)()">测试</div> -->
+<div onclick="handleClick.apply(this)">测试</div>
+<script>
+  function handleClick() {
+    console.log(this);
+  }
+</script>
+```
+
+### apply 的技巧型应用
+
+- 利用 apply 可以替代函数执行并且传参方式换成数组
+
+```js
+var arr = [1, 123, 124, 12, 3, 235, 23, 65, 52, 35, 246];
+// Math.max 数学中找最大数的方法 max 函数操作的时候 没有用到 this
+console.log(Math.max(1, 123, 124, 12, 3, 235, 23, 65, 52, 35, 246));
+// 输出最大值;
+// max 函数操作的时候 没有用到 this 所有 这里的this是什么都可以
+var maxNum = Math.max.apply(null, arr); //apply 替max函数执行
+console.log(maxNum);
+```
+
+#### 函数进阶
+
+##### 函数内的 关键字 arguments
+
+- 指的是 函数的实参集合 也就是将函数的实参组成一个类数组
+- 类数组 只能 .length 或者 [n] -> 选择类数组的第几个数
+
+```js
+var fun = function () {
+  console.log(arguments);
+};
+fun(1, 2, 3, 4);
+// 输出类数组[1, 2, 3, 4, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+```
+
+- 案例：根据 arguments 实现实参的求和
+
+```js
+var res = 0
+function fun1() {
+  for (let i = 0; i < arguments.length; i++) {
+    res += arguments[i];
+  }
+  return fun1;
+}
+**函数的返回值**
+var a = fun1(1, 2, 4, 5)(2, 2, 2);//因为函数fun1函数的返回值是一个函数 所以后面可以无限加括号
+console.log(a); //输出的是fun1函数
+console.log(res); //输出括号内实参的和
+```
+
+### 函数的分类
+
+#### 匿名函数 不会自己创建 一般都是当作参数传递
+
+- 函数拥有作用域
+- 匿名函数立即执行 主要作用是封装作用域
+- 因为全局变量越多就会污染全局环境
+
+```js
+// 将写好的js文件封装起来然后引入到html文件中
+(function () {
+  var loop = "一顿操作";
+  window.loop = loop;
+  // 给window添加一个属性 将作用域内的loop暴露出去(全局的)
+})();
+```
+
+#### 回调函数
+
+- 当一个函数被当做参数传递的时候 这个函数就是回调函数
+  例如： 事件内的函数 动画回调 计时器回调
+
+#### 递归函数
+
+- 函数内部调用函数本身
+
+```js
+var num = 0;
+function sub() {
+  if (num < 100) {
+    num++;
+    console.log(num);
+    sub();
+  }
+}
+sub();
+```
+
+递归面试题 非波拉契数列
+
+```js
+var fib = function (n) {
+  if (n <= 2) {
+    return 1;
+  }
+  return fib(n - 1) + fib(n - 2);
+};
+
+console.log(res); //输出2
+```
+
+**递归函数实现查找 二叉树的查找**
+
+- 给你一个 id 找到 id 的这个对象
+
+```js
+var arr = [
+  {
+    id: 1,
+    label: "一级 1",
+    children: [
+      {
+        id: 2,
+        label: "二级 1-1",
+        children: [
+          {
+            id: 3,
+            label: "三级 1-1-1",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 4,
+    label: "一级 2",
+    children: [
+      {
+        id: 5,
+        label: "二级 2-1",
+        children: [
+          {
+            id: 6,
+            label: "三级 2-1-1",
+          },
+        ],
+      },
+      {
+        id: 7,
+        label: "二级 2-2",
+        children: [
+          {
+            id: 8,
+            label: "三级 2-2-1",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 9,
+    label: "一级 3",
+    children: [
+      {
+        id: 10,
+        label: "二级 3-1",
+        children: [
+          {
+            id: 11,
+            label: "三级 3-1-1",
+          },
+        ],
+      },
+      {
+        id: 12,
+        label: "二级 3-2",
+        children: [
+          {
+            id: 13,
+            label: "三级 3-2-1",
+          },
+        ],
+      },
+    ],
+  },
+];
+```
+
+```js
+function findObjById(arr, id) {
+  var currentObj = arr.find(function (item) {
+    return item.id === id;
+  });
+  if (currentObj) {
+    return currentObj;
+  } else {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].children && arr[i].children.length) {
+        // 当形成递归的时候 递归函数内声明的变量是不可以相互访问的 需要递归函数设置返回值
+        currentObj = findObjById(arr[i].children, id);
+        if (currentObj) {
+          return currentObj;
+        }
       }
+    }
+  }
+}
+var res = findObjById(arr, 2);
+console.log(res);
+```
 
-      // call  apply   替代某个函数执行，并且将函数内的 this 指向改了
-      // call 和 apply 的区别仅限于当需要给函数传递参数的时候有区别
-      // xxFun.call(newThis,参数1,参数2,...)
-      // xxFun.apply(newThis,[参数1,参数2,...])
-      // var obj = {
-      //   b: 100
-      // };
-      // var b = 200;
+#### 闭包函数
 
-      // var fun1 = function (x, y, z) {
-      //   console.log(this);
-      //   console.log(x + y + z);
-      //   console.log(this.b);
-      // };
-      // fun1.call(obj, 1, 2, 3);
-      // fun1.apply(obj, [1, 2, 3]);
+- 函数内嵌套函数就形成了闭包
+- 作用域的嵌套 而且嵌套关系永远存在
+- 闭包外层定义的变量会一直存储在内存中，等待闭包内层作用域访问
+- 内存占用比较大
 
-      // fun1(3, 4, 5);
+```js
+function fun() {
+  var num = 10;
+  function fun1() {
+    num++;
+    console.log(num);
+  }
+  return fun1;
+}
 
-      // apply 的技巧型 应用   利用 apply 可以替代函数执行并且传参方式换成数组
-      var arr = [1, 123, 124, 12, 3, 235, 23, 65, 52, 35, 246];
-      // max 函数操作的时候 没有用到 this
-      var maxNum = Math.max.apply(null, arr);
-      console.log(maxNum);
+var newFun = fun(); // 因为fun函数返回的是fun1函数 所以直接fun()拿不到值
+newFun(); //输出11
+newFun(); //输出12，闭包外层定义的变量会一直存储在内存中，等待闭包内层作用域访问，
+```
+
+**闭包小应用**
+解决异步问题
+
+```js
+// 一秒后输出 0,1,2,3,4
+for (var i = 0; i < 5; i++) {
+  (function (j) {
+    setTimeout(function () {
+      console.log(j);
+    }, 1000);
+  })(i);
+}
+// 一秒后输出5个5
+for (var i = 0; i < 5; i++) {
+  setTimeout(function () {
+    console.log(i);
+  }, 1000);
+}
+```
+
+页面中 ul > 5 个 li 点击 li 分别输出对应索引
+
+```js
+var liEle = document.querySelectorAll("ul li");
+for (var i = 0; i < liEle.length; i++) {
+  (function (j) {
+    liEle[i].onclick = function () {
+      console.log(j);
+    };
+  })(i);
+}
+
+// 或者;
+for (var i = 0; i < liEle.length; i++) {
+  liEle[i].onclick = (function (j) {
+    return function () {
+      console.log(j);
+    };
+  })(i);
+}
+```
+
+**闭包小测试**
+
+```js
+function fun(n, o) {
+  console.log(o);
+  return {
+    fun: function (m) {
+      return fun(m, n);
+    },
+  };
+}
+var a = fun(0);
+undefined;
+a.fun(1); //0
+a.fun(2); //0
+a.fun(3); // 0
+var b = fun(0).fun(1).fun(2).fun(3); // undefined 0 0 0
+var c = fun(0).fun(1); // undefined 0
+c.fun(2); // 1;
+c.fun(3); //1;
+```
+
+#### 构造函数
+
+- 构造函数 用于创建对象的函数
+- 所有内置对象都有对应的构造函数
+- 构造函数 依然是一个函数 函数名首字母必须大写
+
+```js
+// 构造函数创建对象
+function CreateCat(name, age) {
+  // 构造函数内部使用 this 向创建好的对象内添加属性或方法
+  // this 指向的就是 new  CreateCat 的时候的实例化对象
+  this.name = name;
+  this.age = age;
+}
+// 构造函数拥有一个原型属性 prototype ,该属性是一个对象 这个对象内创建的内容是相当于给所有的实例化对象创建的公有属性(方法)
+// 原型内的属性和方法会在实例化对象下的 __proto__ 属性内找到
+// 构造函数的原型对象    CreateCat.prototype  该对象内的属性和方法就是公共的属性或方法
+// 所以我们可以通过 对构造函数的原型对象进行修改 从而给实例化对象创建公共的属性或者方法
+// 构造函数的原型对象内默认会有一个 constructor 方法，该方法指的就是构造函数本身
+CreateCat.prototype.say = function () {
+  // this 指向的就是 new  CreateCat 的时候的实例化对象
+  console.log(this.name);
+};
+// 使用构造函数创建实例化对象
+// 创建好的实例化对象下 默认存在一个 __proto__ 属性，该属性指的就是 创建该实例化对象的构造函数的原型对象
+var catOne = new CreateCat("大白", 2);
+var catTwo = new CreateCat("大白1", 1);
+console.log(catOne);
+// 调用实例化对象下构造函数原型下的say方法
+catOne.say();
+console.log(catTwo);
+catTwo.say();
+```
+
+#### 构造函数的继承
+
+```js
+function SystemUser(username, userage) {
+  User.call(this, username, userage);
+  // 只是将 User 的构造函数内的属性或方法继承了
+}
+// 还需要继承 User.prototype 里面的内容
+
+// 使用对象合并的方式比较好
+Object.assign(SystemUser.prototype, User.prototype);
+
+SystemUser.prototype.sayHi = function () {
+  console.log("我是管理员");
+};
+var systemUser1 = new SystemUser("大 a", 30);
+console.log(systemUser1);
+```
+
+#### 合并数组的方法
+
+```js
+var obj = { name: '哈哈哈', a: 'hello', age: 20 }
+var obj1 = { age: 0 }
+
+1. for in 语句 遍历对象
+for (var key in obj) {
+  // key 代表属性名
+  // 当对象的属性名存在了一个变量内 想要访问属性值  obj[变量]
+  // console.log(obj[key])
+  obj1[key] = obj[key]
+}
+console.log(obj1)
+
+
+2. Object.keys(对象)  获取对象内的 所有属性名的集合
+
+console.log(Object.keys(obj))
+var keys = Object.keys(obj)
+for (let i = 0; i < keys.length; i++) {
+  // console.log(keys[i])
+  obj1[keys[i]] = obj[keys[i]]
+}
+console.log(obj1)
+
+3. Object.assign(obj1,obj2,obj3......)
+// 将第一个参数后面的所有对象合并到第一个参数内 重名的属性后面的覆盖前面的
+Object.assign(obj1, obj)
+console.log(obj1)
+
+4. 使用高级 js 语法  ...  展开运算符
+合并 obj1 和 obj 给到 newObj
+var newObj = { ...obj1, ...obj }
+console.log(newObj)
 ```

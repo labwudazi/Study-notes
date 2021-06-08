@@ -855,3 +855,271 @@ import "../filters/index";
 * 在打包环境中使用 ECharts 按需引入 [ECharts 官网](https://echarts.apache.org/zh/index.html)
 
 - 创建 vue 插件使用
+
+### vue 进阶
+
+#### 组件通信
+
+- **父传子 prop**
+  父组件传递
+
+```html
+<Son :value="count.value" />
+```
+
+```js
+export default {
+  data() {
+    return {
+      count: { value: 1000 }
+    };
+  },
+```
+
+子组件接收
+
+```js
+export default {
+  props:['value']
+  },
+```
+
+```js
+<template>
+  <div>
+    <p>子组件使用父组件data:{{ value }}</p>
+  </div>
+</template>
+```
+
+- **子传父 $emit**
+  父组件 v-bind 可以传递一个对象 data
+
+```html
+<Son v-bind="count" @change-value="changeValue" />
+```
+
+```js
+  methods: {
+      changeValue(newValue) {
+          this.count.value = newValue
+      }
+  },
+```
+
+子组件
+
+```js
+methods: {
+    handleClick() {
+    this.$emit('change-value',100)
+    }
+},
+```
+
+- 父传子 插槽 slot
+- **子传父 定义 ref**
+- vuex
+- 父传子 .sync
+  父组件传递
+
+```html
+<Son :value.sync="count.value" />
+```
+
+```js
+export default {
+  data() {
+    return {
+      count: { value: 1000 }
+    };
+  },
+```
+
+子组件接收,并传递参数,并且传递了 prop
+
+```js
+props:['value']
+methods: {
+    handleClick() {
+    this.$emit('update:value',100)
+    }
+},
+```
+
+- $parent $children $root $refs 获取组件实例
+  **父组件**
+
+```html
+<template>
+  <div>
+    <p ref="p">父组件的 data:{{ count }}</p>
+    <button @click="getSonNum">获取子组件的number</button>
+    <button @click="getRoot">获取根组件实例</button>
+    <button @click="getSon">根据组件的ref获取组件的实例</button>
+    <Son1 ref="mySon1" />
+  </div>
+</template>
+```
+
+```js
+export default {
+  data() {
+    return {
+      count: 2000,
+    };
+  },
+  components: {
+    Son1,
+  },
+  methods: {
+    change(newValue) {
+      this.count = newValue;
+    },
+    getSonNum() {
+      console.log(this.$children[0].number);
+    },
+    getRoot() {
+      console.log(this.$root);
+    },
+    getSon() {
+      console.log(this.$refs.mySon1);
+      console.log(this.$refs.p);
+    },
+  },
+};
+```
+
+**子组件**
+
+```html
+<div>
+  <p>子组件1使用父组件1 data:{{count}}</p>
+  <button @click="changeParentData">
+    通过$parent调用父组件的事件修改父组件的data
+  </button>
+</div>
+```
+
+```js
+export default {
+  data() {
+    return {
+      number: 5,
+    };
+  },
+  computed: {
+    count() {
+      return this.$parent.count;
+    },
+  },
+  methods: {
+    changeParentData() {
+      console.log(this.$parent);
+      console.log(this.$parent.count);
+      this.$parent.change(200);
+    },
+  },
+};
+```
+
+- 依赖注入:provide 传, inject 获取 可以传给后代
+**父组件传**
+```js
+export default {
+  data() {
+    return {
+      count: 100,
+    };
+  },
+  provide(){
+ return {
+   //向下提供的data的时候,要写成函数带返回值的形式,这样后代组件才能动态获取
+   count:()=> this.count,
+   changeCount:this.changeCount
+ }
+  },
+  methods: {
+    changeCount(newCount) {
+      this.count = newCount;
+    },
+  },
+};
+```
+**子子组件接收**
+```vue
+<template>
+  <div>
+      // 当provide传data 时使用的是函数的时候，接收使用要当做函数调用例如 count()
+      <p>我是子子组件,父父组件传递data{{count()}}</p>
+      <button @click="handlClik">使用inject修改父父组件的data</button>
+  </div>
+</template>
+
+<script>
+export default {
+inject:['count','changeCount'],
+methods: {
+    handlClik() {
+       this.changeCount(200) 
+    }
+},
+}
+</script>
+```
+- $attrs $listeners
+**父组件**
+```html
+<template>
+  <div>
+    <Son2 @xxx="()=>{count++} " title="xxxx" id="xxx" class="yyy" />
+  </div>
+</template>
+```
+**子组件**
+```js
+created(){
+  //$attrs 获取当前组件的所有html属性(class属性拿不到)，就是 父组件使用我的时候标签内传递的所有属性
+console.log(this.$attrs)
+// 获取传递的事件
+console.log(this.$listeners)
+},
+```
+- v-model 父传子
+
+
+#### vue 渲染函数 && jsx
+
+#### 插件
+
+#### 生产环境部署
+
+因为是单页面应用，如果用了路由的话，分两种情况。
+情况 1：使用路由的 hash 模式
+
+- 将 mode 改成 hash
+- 如果部署的服务器地址是带路径的比如`https://<USERNAME>.github.io/<REPO>/`,就是要部署到 github 的 gh-pages.需要给 vue 添加一个 publicPath 配置
+- 在项目根目录新建 vue.config.js ,这个文件是 Vue 的配置文件，会自动和项目原配置合并
+- 根据服务器地址修改对应的 publicPath
+- 重启项目，保证本地运行项目没问题
+- 打包成品到本地 执行`npm run build`
+- 在 dist 文件夹下起一个 本地服务，项目就可以正常运行 。打包好执行`serve .`在服务器启动项目
+- 然后将 dist 文件内的所有内容上传到服务器。
+- 上传完毕后，直接在服务器上访问。
+  情况二：使用路由的 history 模式，此模式的时候必须对部署的服务器进行设置，所有的地址前部指向根目录 index.html
+
+#### github 部署 vue 项目的时候借助 ph-gages 工具包自动更新 gh-pages 分支
+
+- 在 paakage.json scripts 字段 中添加一个 deploy 如下所示，作用是将根目录下的 dist 内的所有 内容上传到 gh-pages 分支
+
+```json
+"scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "deploy":"gh-pages -d dist"
+  },
+```
+
+- 对你的项目进行本地更新，打包编译 `npm run build`
+- 将项目修改的源码跟新到 main 分支。
+- 直接使用 `npm run deploy`自动更新 gh-pages
